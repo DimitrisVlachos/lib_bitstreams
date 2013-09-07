@@ -1,4 +1,3 @@
-
 //Simple usage example
 
 #include "bit_streams.hpp"
@@ -20,7 +19,7 @@ void test_bit_streams() {
 	printf("Write : built-in types\n");
 
 	for (uint64_t i = 0;i < 256*1024;++i) {
-		 for (uint64_t x = 1;x<=64;x+=8) {
+		 for (uint64_t x = 8;x<=64;x+=8) {
 			out.write(i&((1<<x)-1),x);
 		}
 	}
@@ -45,7 +44,7 @@ void test_bit_streams() {
 	
 	printf("Read : built-in types\n");
 	for (uint64_t i = 0;i < 256*1024;++i) {
-		for (uint64_t x = 1;x<=64;x+=8) {
+		for (uint64_t x = 8;x<=64;x+=8) {
 		 	uint64_t v = in.read(x);
 			if (v != (i&((1<<x)-1))) {	
 				printf("Read error %llu %llu\n",v,i );
