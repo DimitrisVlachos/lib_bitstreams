@@ -1,3 +1,8 @@
+
+/*
+	Author : Dimitris Vlachos (DimitrisV22@gmail.com @ github.com/DimitrisVlachos)
+*/
+
 #ifndef _bit_streams_hpp_
 #define _bit_streams_hpp_
 #include "file_stream.hpp"
