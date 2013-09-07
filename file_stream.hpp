@@ -1,4 +1,8 @@
 
+/*
+	Author : Dimitris Vlachos (DimitrisV22@gmail.com @ github.com/DimitrisVlachos)
+*/
+
 #ifndef __filestream_hpp__
 #define __filestream_hpp__
 #include <iostream>
