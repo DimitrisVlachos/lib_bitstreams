@@ -1,4 +1,3 @@
-
 /*
 	Author : Dimitris Vlachos (DimitrisV22@gmail.com @ github.com/DimitrisVlachos)
 */
@@ -116,7 +115,7 @@ namespace file_streams {
 
 		const char* identity() const { return "file_stream_writer_c"; }
 	 
-		uint64_t tell() { m_fp.tellp();  }
+		uint64_t tell() { return m_fp.tellp();  }
 		uint64_t seek(const uint64_t offs) { 
 			m_fp.seekp(offs,std::ios::beg);
 			return m_fp.tellp(); 
