@@ -7,6 +7,8 @@
 #include <iostream>
 #include <stdint.h>
 #include <fstream>
+#include <cstring>
+#include <string>
 
 namespace file_streams {
 	class file_stream_if {
