@@ -5,8 +5,8 @@
 
 void test_bit_streams() {
 	uint8_t* tmp,*tmp2;
-	bit_streams::bit_stream_writer_c out;
-	bit_streams::bit_stream_reader_c in;
+	bit_streams::bit_stream_writer_c<file_streams::file_stream_writer_c> out;
+	bit_streams::bit_stream_reader_c<file_streams::file_stream_reader_c> in;
 
 	if (!out.open("wr.bin")) {
 		printf("Unable to open wr.bin!(+W)\n");

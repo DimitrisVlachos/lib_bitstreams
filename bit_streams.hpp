@@ -9,6 +9,8 @@
 #include <vector>
  
 namespace bit_streams {
+
+	template <class reader_type_c>
 	class bit_stream_reader_c {
 		private:
 		file_streams::file_stream_if* m_handle;
@@ -61,7 +63,7 @@ namespace bit_streams {
 		bool open(const char* path)	{ 
 			close();
 			if (!m_buffer) return false;
-			m_handle = new file_streams::file_stream_reader_c(path);
+			m_handle = new reader_type_c(path);
 			if (!m_handle) 
 				return false;
 			if (!m_handle->is_open()) {
@@ -150,6 +152,7 @@ namespace bit_streams {
 		}
 	};
 
+	template <class writer_type_c>
 	class bit_stream_writer_c {
 		private:
 		file_streams::file_stream_if* m_handle;
@@ -205,7 +208,7 @@ namespace bit_streams {
 
 		bool open(const char* path)	{ 
 			close();
-			m_handle = new file_streams::file_stream_writer_c(path);
+			m_handle = new writer_type_c(path);
 			if (!m_handle) 
 				return false;
 			return m_handle->is_open();
