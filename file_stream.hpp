@@ -5,6 +5,7 @@
 #ifndef __filestream_hpp__
 #define __filestream_hpp__
 #include <iostream>
+#include <vector>
 #include <stdint.h>
 #include <fstream>
 #include <cstring>
@@ -203,6 +204,83 @@ namespace file_streams {
 			memcpy(dest,(const void*)(m_ram + m_fp_offs),tmp);
 			m_fp_offs += tmp;
 			return tmp;
+		}
+	};
+
+	class file_mem_writer_c : public file_stream_if {
+		private:
+		std::vector<uint8_t>* m_fp;
+		uint64_t m_fp_offs;
+		bool m_cleanup;
+
+		public:
+
+		file_mem_writer_c(std::vector<uint8_t>* in_v,bool cleanup) : m_fp(in_v) ,m_fp_offs(0U),m_cleanup(cleanup)  {}
+		file_mem_writer_c() : m_fp(0) ,m_fp_offs(0U),m_cleanup(false)  {}
+		~file_mem_writer_c() { this->close(); }
+
+		uint64_t tell() { return m_fp_offs; }
+		uint64_t size() { return m_fp->size(); }
+		bool is_open() { return true; }
+		const char* identity() const { return "file_mem_writer_c"; }
+ 
+		bool close() {
+			if (m_fp && m_cleanup)
+				delete m_fp;
+
+			m_fp_offs = 0U;
+			m_fp = 0;
+			m_cleanup = false;
+			return true;
+		}
+
+		bool open(std::vector<uint8_t>* in_v,bool cleanup) {
+			close();
+ 			if ((!m_fp) )
+				return false;
+			m_fp = in_v;
+			m_cleanup = cleanup;
+			return true;
+		}
+
+		uint64_t seek(const uint64_t offs) { 
+			if (offs > m_fp->size()) {
+				m_fp_offs = m_fp->size();
+				return m_fp_offs;
+			}
+			m_fp_offs = offs;
+			return m_fp_offs; 
+		}
+
+		bool write(const uint8_t v) { 
+			if (!m_fp) return false;
+
+			if (m_fp_offs+1U >= m_fp->size()) {
+				++m_fp_offs;
+				m_fp->push_back(v); 
+				return true; 
+			}
+
+			m_fp->at( (m_fp_offs++) ) = v;
+			return true;
+		}
+
+		uint64_t write(const void* src,const uint64_t len) {
+		 
+			if ((0U == len) || (!m_fp))
+				return 0U;
+ 
+			const uint8_t* tmp = static_cast<const uint8_t*>(src);
+			const uint8_t* tmp2 = tmp + len;
+			while ((tmp < tmp2) && (m_fp_offs < m_fp->size()))
+				m_fp->at( (m_fp_offs++) ) = *(tmp++);
+
+			while ((tmp < tmp2)) {
+				m_fp->push_back(*(tmp++));
+				m_fp_offs++;
+			}
+
+			return len;
 		}
 	};
 }
